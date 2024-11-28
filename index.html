@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="globals.css" />
+    <link rel="stylesheet" href="assets/css/styleguide.css" />
+    <link rel="stylesheet" href="assets/css/bootstrap.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="globals.css" />
+      <!-- <link rel="stylesheet" href="assets/css/styleguide.css" /> -->
+      <!-- <link rel="stylesheet" href="style.css" /> -->
+    <script type="text/javascript" src="bootstrap.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  </head>
+
+  
+  <body>
+    <div class="dashboard-menu">
+      <header class="frame-wrapper">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6 col-sm-6">
+              <img class="u-align-left u-image u-image-default u-image-1" src="https://assets.nicepagecdn.com/51f4b7da/6305210/images/LeasePixie.png" alt="" style="filter: invert(0);max-width: 140px;width: 104px;margin-top: 7px;height:23px">
+            </div>
+            <div class="col-md-6 col-sm-6 text-right">
+              <button class="hamburger-button" onclick="toggleMenu()" aria-label="Open Menu"><img class="hamburger-icon" src="assets/img/menu.svg" alt="Menu" /></button>
+              <div id="hamburger-menu">
+                <div class="header_menu">
+                  <ul class="menu">
+                    <li class="sub_menu_item show">
+                      <p>Add</p>
+                      <div class="sub_menu_arrow">
+                        <div class="open_arrow" style="display: block;">
+                          <img class="img" src="assets/img/chevron-right.svg">
+                        </div>
+                        <div class="close_arrow" style="display: none;">
+                          <img class="img" src="assets/img/chevron-right-2.svg">
+                        </div>
+                      </div>
+                      <ul class="sub_menu" style="display: block;">
+                        <li>User</li>
+                        <li>Property</li>
+                        <li>Portfolio</li>
+                      </ul>
+                    </li>
+                    <li class="sub_menu_item">
+                      <p>Settings</p>
+                      <div class="sub_menu_arrow">
+                        <div class="open_arrow" style="display: none;">
+                          <img class="img" src="assets/img/chevron-right.svg">
+                        </div>
+                        <div class="close_arrow" style="display: block;">
+                          <img class="img" src="assets/img/chevron-right-2.svg">
+                        </div>
+                      </div>
+                      <ul class="sub_menu" style="display: none;">
+                        <li>User</li>
+                        <li>Portfolio</li>
+                      </ul>
+                    </li>
+                  </ul>
+                  <div class="graphs-wrapper"><a href="#">Sign out</a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+    </div>
+<!-- dashboard-menu end -->
+
+    <!-- hamburger-button -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+  // Initialize the menu
+  initMenu();
+
+  // Attach submenu toggle functionality
+  initSubMenuHandlers();
+
+  // Attach click outside handlers
+  attachClickOutsideHandler();
+});
+
+// Function to initialize the hamburger menu
+function initMenu() {
+  const button = document.querySelector(".hamburger-button");
+  const menu = document.getElementById("hamburger-menu");
+
+  if (button && menu) {
+    button.addEventListener("click", function (event) {
+      event.stopPropagation(); // Prevent the event from bubbling up
+      toggleMenu(button, menu);
+    });
+  }
+}
+
+// Function to toggle the hamburger menu
+function toggleMenu(button, menu) {
+  const isOpen = menu.style.display === "block";
+  menu.style.display = isOpen ? "none" : "block";
+
+  // Update ARIA attributes for accessibility
+  button.setAttribute("aria-expanded", !isOpen);
+  button.setAttribute("aria-label", isOpen ? "Open Menu" : "Close Menu");
+}
+
+// Function to initialize submenu handlers
+function initSubMenuHandlers() {
+  const menuItems = document.querySelectorAll(".sub_menu_item");
+
+  if (menuItems) {
+    menuItems.forEach((item) => {
+      item.addEventListener("click", function (event) {
+        event.stopPropagation(); // Prevent click from propagating
+        toggleSubMenu(item);
+      });
+    });
+  }
+}
+
+// Function to toggle a specific submenu
+function toggleSubMenu(parentItem) {
+  const subMenu = parentItem.querySelector(".sub_menu");
+  const openArrow = parentItem.querySelector(".open_arrow");
+  const closeArrow = parentItem.querySelector(".close_arrow");
+  const menuText = parentItem.querySelector("p");
+
+  if (subMenu) {
+    if (subMenu.style.display === "block") {
+      // Collapse the submenu
+      subMenu.style.display = "none";
+      openArrow.style.display = "none"; // Hide open arrow
+      closeArrow.style.display = "block"; // Show close arrow
+      menuText.style.fontWeight = "normal"; // Reset font weight
+    } else {
+      // Collapse others and expand this one
+      collapseAllSubMenus();
+      subMenu.style.display = "block";
+      openArrow.style.display = "block"; // Show open arrow
+      closeArrow.style.display = "none"; // Hide close arrow
+      menuText.style.fontWeight = "bold"; // Highlight font
+    }
+  }
+}
+
+// Function to collapse all submenus
+function collapseAllSubMenus() {
+  const subMenus = document.querySelectorAll(".sub_menu");
+  const openArrows = document.querySelectorAll(".sub_menu_arrow .open_arrow");
+  const closeArrows = document.querySelectorAll(".sub_menu_arrow .close_arrow");
+  const menuTexts = document.querySelectorAll(".sub_menu_item > p");
+
+  // Collapse all submenus
+  subMenus.forEach((menu) => (menu.style.display = "none"));
+
+  // Reset arrows and text styles
+  openArrows.forEach((arrow) => (arrow.style.display = "none"));
+  closeArrows.forEach((arrow) => (arrow.style.display = "block"));
+  menuTexts.forEach((text) => (text.style.fontWeight = "normal"));
+}
+
+// Function to attach a click handler for outside clicks
+function attachClickOutsideHandler() {
+  const menu = document.getElementById("hamburger-menu");
+  const button = document.querySelector(".hamburger-button");
+
+  if (menu && button) {
+    document.addEventListener("click", function (event) {
+      const isClickInsideMenu = menu.contains(event.target);
+      const isClickInsideButton = button.contains(event.target);
+
+      if (!isClickInsideMenu && !isClickInsideButton) {
+        // Close the menu
+        menu.style.display = "none";
+        button.setAttribute("aria-expanded", "false");
+        button.setAttribute("aria-label", "Open Menu");
+
+        // Collapse all submenus
+        collapseAllSubMenus();
+      }
+    });
+  }
+}
+
+  </script>
+  </body>
+</html>
